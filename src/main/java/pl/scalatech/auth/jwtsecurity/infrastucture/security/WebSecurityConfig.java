@@ -1,7 +1,9 @@
 package pl.scalatech.auth.jwtsecurity.infrastucture.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -35,18 +37,6 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
                 .and()
-                //.accessDeniedHandler(problemSupport)
-                //.and()
-                .headers()
-                .contentSecurityPolicy("default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com data:")
-                .and()
-                .referrerPolicy(STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
-                .and()
-                .featurePolicy("geolocation 'none'; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; fullscreen 'self'; payment 'none'")
-                .and()
-                .frameOptions()
-                .deny()
-                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(STATELESS)
                 .and()
@@ -56,7 +46,6 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/management/**").hasAuthority(ADMIN)
                 .antMatchers("/api/authenticate").permitAll()
                 .antMatchers("/api/register").permitAll()
-                .antMatchers("/api/activate").permitAll()
                 .anyRequest().fullyAuthenticated()
                 .and()
                 .httpBasic();
@@ -78,5 +67,10 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
            .antMatchers("/content/**")
            .antMatchers("/test/**")
            .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/v2/api-docs");
+    }
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 }

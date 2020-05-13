@@ -13,7 +13,7 @@ import java.util.Collection;
 
 @Slf4j
 @RequiredArgsConstructor
-class JwtUserDetailsService implements UserDetailsService {
+public class JwtUserDetailsService implements UserDetailsService {
 
     private final UserRepositoryPort userRepo;
 

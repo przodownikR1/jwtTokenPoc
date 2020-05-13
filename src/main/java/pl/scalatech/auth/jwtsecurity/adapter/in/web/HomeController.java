@@ -1,12 +1,16 @@
 package pl.scalatech.auth.jwtsecurity.adapter.in.web;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pl.scalatech.auth.jwtsecurity.infrastucture.security.UserAuth;
+import pl.scalatech.auth.jwtsecurity.port.UserRepositoryPort;
 
 import java.security.Principal;
 import java.util.*;
@@ -16,12 +20,25 @@ import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @Slf4j
+@RequiredArgsConstructor
 class HomeController {
+
+    private final UserRepositoryPort userRepo;
 
     @GetMapping("/")
     String index() {
         return "Hello world";
     }
+
+
+    @GetMapping("/user")
+    ResponseEntity<UserAuth> getUser(@RequestParam String username) {
+        return userRepo.findByUsername(username)
+                       .map(user -> ResponseEntity.ok(user))
+                       .orElseGet(() -> ResponseEntity.notFound()
+                                                      .build());
+    }
+
 
     @GetMapping("/api/user")
     String user(Principal principal) {

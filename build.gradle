@@ -48,10 +48,22 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     //JWT
-    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    //implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    //java.lang.ClassNotFoundException: javax.xml.bind.DatatypeConverter
+
+
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.1'
+    runtime group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.1'
+    runtime group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.1'
     //or
     implementation 'com.auth0:java-jwt:3.10.3'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // SWAGGER
+    compile "io.springfox:springfox-swagger2:${springfoxSwaggerVersion}"
+    compile "io.springfox:springfox-swagger-ui:${springfoxSwaggerVersion}"
+
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'

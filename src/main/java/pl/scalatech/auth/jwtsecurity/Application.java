@@ -24,6 +24,9 @@ public class Application {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    JwtSetting jwtSetting;
+
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
@@ -33,6 +36,7 @@ public class Application {
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {
+                log.info("JWT SETTING : {}",jwtSetting);
                 UserAuth userOne = new UserAuth("przodownik@tlen.pl", "przodownik", "Slawek", "Borowiec", bCryptPasswordEncoder.encode("secret1"), Set.of("USER"));
                 UserAuth userTwo = new UserAuth("kowalski@tlen.pl", "kowal", "Jan", "Kowalski", bCryptPasswordEncoder.encode("secret2"), Set.of("USER", "MANAGER"));
                 UserAuth userThree = new UserAuth("admin@tlen.pl", "wespa", "Wlodzimierz", "Lenin", bCryptPasswordEncoder.encode("secret3"), Set.of("ADMIN"));
