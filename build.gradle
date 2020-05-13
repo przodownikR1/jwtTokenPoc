@@ -1,0 +1,102 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.owasp:dependency-check-gradle:5.3.2'
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.8"
+        classpath "com.adarshr:gradle-test-logger-plugin:${gradleTestLoggerVersion}"
+        classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:${gradleGitPropertiesVersion}"
+        classpath('com.palantir.gradle.docker:gradle-docker:0.25.0')
+    }
+}
+
+plugins {
+    id 'org.springframework.boot' version '2.2.7.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'org.asciidoctor.convert' version '1.5.8'
+    id 'java'
+}
+apply plugin: 'org.owasp.dependencycheck'
+apply from: 'gradle/boot.gradle'
+apply from: 'gradle/sonar.gradle'
+apply from: 'gradle/spock.gradle'
+apply plugin: "com.adarshr.test-logger"
+apply plugin: 'com.palantir.docker'
+group = 'pl.scalatech.auth'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('snippetsDir', file("build/generated-snippets"))
+    spockVersion = "1.3-groovy-2.5"
+    groovyVersion = "2.5.9"
+    spockReportsVersion = "1.2.10"
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testCompile "org.codehaus.groovy:groovy-all:$groovyVersion"
+    testImplementation "org.spockframework:spock-spring:$spockVersion"
+    testImplementation "org.spockframework:spock-core:$spockVersion" // required to use spring // may no longer be needed
+
+    testCompile "com.athaydes:spock-reports:$spockReportsVersion"
+    // optional dependencies for using Spock
+    testCompile "org.hamcrest:hamcrest-core:2.2"    // only necessary if Hamcrest matchers are used
+    testRuntime "net.bytebuddy:byte-buddy:1.10.6"   // allows mocking of classes (in addition to interfaces)
+    testRuntime "org.objenesis:objenesis:3.1"       // allows mocking of classes without default constructor (together with
+    // CGLIB)
+}
+
+test {
+    outputs.dir snippetsDir
+    useJUnitPlatform()
+}
+
+asciidoctor {
+    inputs.dir snippetsDir
+    dependsOn test
+}
+task unpack(type: Copy) {
+    dependsOn bootJar
+    from(zipTree(tasks.bootJar.outputs.files.singleFile))
+    into("build/dependency")
+}
+docker {
+    tags "${project.version}"
+    dockerfile project.file('Dockerfile')
+    name "${project.group}/${bootJar.archiveBaseName.getOrElse('cashsystem')}"
+    copySpec.from(tasks.unpack.outputs).into("dependency")
+    buildArgs(['DEPENDENCY': "dependency"])
+
+}
+testlogger {
+    theme 'standard-parallel'
+    showSummary true
+    slowThreshold 20
+    showPassed true
+    showSkipped true
+    showFailed true
+    showSkippedStandardStreams true
+    showFailedStandardStreams true
+}
