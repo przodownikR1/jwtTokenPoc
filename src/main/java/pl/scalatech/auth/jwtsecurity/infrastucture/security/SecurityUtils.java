@@ -1,4 +1,4 @@
-package pl.scalatech.auth.jwtsecurity;
+package pl.scalatech.auth.jwtsecurity.infrastucture.security;
 
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,7 +11,6 @@ public final class SecurityUtils {
 
     private SecurityUtils() {
     }
-
 
     public static Optional<String> getCurrentUserLogin() {
         SecurityContext securityContext = SecurityContextHolder.getContext();

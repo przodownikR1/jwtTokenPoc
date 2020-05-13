@@ -1,4 +1,4 @@
-package pl.scalatech.auth.jwtsecurity;
+package pl.scalatech.auth.jwtsecurity.adapter.in.web;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +21,26 @@ class HomeController {
     @GetMapping("/")
     String index() {
         return "Hello world";
+    }
+
+    @GetMapping("/api/user")
+    String user(Principal principal) {
+        log.info("user : {}", getUserName(principal));
+        return "Hello users world";
+    }
+
+    @GetMapping("/api/admin")
+    String admin(Principal principal) {
+
+        log.info("admin : {}", getUserName(principal));
+        return "Hello admins world";
+    }
+
+    @GetMapping("/api/manager")
+    String manager(Principal principal) {
+
+        log.info("manager : {}", getUserName(principal));
+        return "Hello managers world";
     }
 
     @GetMapping("/secContext")

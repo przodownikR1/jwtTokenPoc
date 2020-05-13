@@ -1,4 +1,4 @@
-package pl.scalatech.auth.jwtsecurity;
+package pl.scalatech.auth.jwtsecurity.infrastucture.security;
 
 
 public final class AuthoritiesConstants {
