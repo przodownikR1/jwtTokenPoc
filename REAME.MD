@@ -7,7 +7,16 @@ userTwo -> "kowalski@tlen.pl", "kowal", "Jan", "Kowalski", bCryptPasswordEncoder
 
 userThree -> "admin@tlen.pl", "wespa", "Wlodzimierz", "Lenin", bCryptPasswordEncoder.encode("secret3"), Set.of("ADMIN") `
 
-**Useful links :** 
+**Useful links :**
+
+https://jwt.io/   -> Encoded jwt token
+
+`"alg": "HS512"
+{
+  "sub": "przodownik@tlen.pl",
+  "iat": 1589414179,
+  "exp": 1589414679
+}`
 
 http://localhost:8096/swagger-ui.html
 

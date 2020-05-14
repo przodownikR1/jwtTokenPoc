@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Enumeration;
 
 import static pl.scalatech.auth.jwtsecurity.infrastucture.security.SecurityConstants.HEADER_STRING;
 import static pl.scalatech.auth.jwtsecurity.infrastucture.security.SecurityConstants.TOKEN_PREFIX;
@@ -33,11 +34,13 @@ class JwtRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         final String requestTokenHeader = request.getHeader(HEADER_STRING);
-
+        final Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()){
+            log.info("header : {}",headerNames.nextElement());
+        }
         String username = null;
-        String jwtToken = null;
-        if (requestTokenHeader != null && requestTokenHeader.startsWith(TOKEN_PREFIX)) {
-            jwtToken = requestTokenHeader.substring(7);
+        String jwtToken = JwtTokenProvider.resolveToken(request);
+        if (requestTokenHeader != null) {
             try {
                 username = jwtTokenProvider.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {

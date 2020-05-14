@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.scalatech.auth.jwtsecurity.infrastucture.security.UserAuth;
@@ -41,7 +42,10 @@ class HomeController {
 
 
     @GetMapping("/api/user")
-    String user(Principal principal) {
+    String user(@RequestHeader Map<String, String> headers, Principal principal) {
+        headers.forEach((key, value) -> {
+            log.info(String.format("Header '%s' = %s", key, value));
+        });
         log.info("user : {}", getUserName(principal));
         return "Hello users world";
     }

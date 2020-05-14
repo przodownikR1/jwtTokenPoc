@@ -1,0 +1,62 @@
+{
+	"id": "3f5dffa5-b0bc-8adc-0dab-ad2efb299fc0",
+	"name": "jwt",
+	"description": "",
+	"order": [
+		"a4f14b9c-776a-50b5-84cf-ab2dc8bfd51e",
+		"65e3867b-3fc3-a09d-0f9d-14859af4c6d0"
+	],
+	"folders": [],
+	"folders_order": [],
+	"timestamp": 1589414307052,
+	"owner": "1052455",
+	"public": false,
+	"requests": [
+		{
+			"id": "65e3867b-3fc3-a09d-0f9d-14859af4c6d0",
+			"headers": "",
+			"headerData": [],
+			"url": "",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "3f5dffa5-b0bc-8adc-0dab-ad2efb299fc0",
+			"data": null,
+			"dataMode": "params",
+			"name": "getuser",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1589414461241,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "a4f14b9c-776a-50b5-84cf-ab2dc8bfd51e",
+			"headers": "",
+			"headerData": [],
+			"url": "",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "3f5dffa5-b0bc-8adc-0dab-ad2efb299fc0",
+			"data": null,
+			"dataMode": "params",
+			"name": "generateToken",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1589414309439,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		}
+	]
+}

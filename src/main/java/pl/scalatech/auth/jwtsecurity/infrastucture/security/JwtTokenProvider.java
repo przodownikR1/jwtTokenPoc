@@ -8,11 +8,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.crypto.SecretKey;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
+import static pl.scalatech.auth.jwtsecurity.infrastucture.security.SecurityConstants.HEADER_STRING;
+import static pl.scalatech.auth.jwtsecurity.infrastucture.security.SecurityConstants.TOKEN_PREFIX;
 
 
 @RequiredArgsConstructor
@@ -51,7 +55,13 @@ public class JwtTokenProvider {
             return true;
         }
     }
-
+    public static String resolveToken(HttpServletRequest req) {
+        String bearerToken = req.getHeader(HEADER_STRING);
+        if (bearerToken != null && bearerToken.startsWith(TOKEN_PREFIX)) {
+            return bearerToken.substring(7, bearerToken.length());
+        }
+        return null;
+    }
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         return doGenerateToken(claims, userDetails.getUsername());
@@ -66,7 +76,7 @@ public class JwtTokenProvider {
         String secretKey = Base64.getEncoder()
                                  .encodeToString(jwtSetting.getSecret()
                                                            .getBytes());
-        return SecurityConstants.TOKEN_PREFIX + Jwts.builder()
+        return TOKEN_PREFIX + Jwts.builder()
                    .setClaims(claims)
                    .setSubject(subject)
                    .setIssuedAt(new Date(System.currentTimeMillis()))
