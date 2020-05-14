@@ -88,14 +88,14 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
     @Bean
-    public FilterRegistrationBean corsFilter() {
+    FilterRegistrationBean corsFilter() {
         FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(corsConfig()));
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return bean;
     }
 
     @Bean
-    public CorsConfigurationSource corsConfig() {
+    CorsConfigurationSource corsConfig() {
         final CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Collections.singletonList("*"));
         configuration.setAllowedMethods(Collections.singletonList("*"));
