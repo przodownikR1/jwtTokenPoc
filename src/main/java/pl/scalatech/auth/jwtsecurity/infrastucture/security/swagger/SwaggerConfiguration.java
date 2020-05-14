@@ -90,8 +90,6 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
                 new SecurityReference("JWT", authorizationScopes));
     }
 
-}
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(SWAGGER_UI_HTML)
