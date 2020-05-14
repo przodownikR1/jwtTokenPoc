@@ -42,10 +42,7 @@ class HomeController {
 
 
     @GetMapping("/api/user")
-    String user(@RequestHeader Map<String, String> headers, Principal principal) {
-        headers.forEach((key, value) -> {
-            log.info(String.format("Header '%s' = %s", key, value));
-        });
+    String user(Principal principal) {
         log.info("user : {}", getUserName(principal));
         return "Hello users world";
     }

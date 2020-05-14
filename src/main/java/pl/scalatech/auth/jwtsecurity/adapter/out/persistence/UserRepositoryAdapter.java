@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 class UserRepositoryAdapter implements UserRepositoryPort {
-    private ConcurrentMap<String, UserAuth> store = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, UserAuth> store = new ConcurrentHashMap<>();
 
     @Override
     public Optional<UserAuth> findByUsername(String username) {

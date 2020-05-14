@@ -55,13 +55,15 @@ public class JwtTokenProvider {
             return true;
         }
     }
+
     public static String resolveToken(HttpServletRequest req) {
         String bearerToken = req.getHeader(HEADER_STRING);
         if (bearerToken != null && bearerToken.startsWith(TOKEN_PREFIX)) {
-            return bearerToken.substring(7, bearerToken.length());
+            return bearerToken.substring(7);
         }
         return null;
     }
+
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         return doGenerateToken(claims, userDetails.getUsername());
@@ -77,12 +79,12 @@ public class JwtTokenProvider {
                                  .encodeToString(jwtSetting.getSecret()
                                                            .getBytes());
         return TOKEN_PREFIX + Jwts.builder()
-                   .setClaims(claims)
-                   .setSubject(subject)
-                   .setIssuedAt(new Date(System.currentTimeMillis()))
-                   .setExpiration(new Date(System.currentTimeMillis() + jwtSetting.getSecExpired() * 1000))
-                   .signWith(KEY)
-                   .compact();
+                                  .setClaims(claims)
+                                  .setSubject(subject)
+                                  .setIssuedAt(new Date(System.currentTimeMillis()))
+                                  .setExpiration(new Date(System.currentTimeMillis() + jwtSetting.getSecExpired() * 1000))
+                                  .signWith(KEY)
+                                  .compact();
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {

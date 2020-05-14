@@ -15,10 +15,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Enumeration;
 
 import static pl.scalatech.auth.jwtsecurity.infrastucture.security.SecurityConstants.HEADER_STRING;
-import static pl.scalatech.auth.jwtsecurity.infrastucture.security.SecurityConstants.TOKEN_PREFIX;
 
 
 @Slf4j

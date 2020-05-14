@@ -7,7 +7,7 @@ import pl.scalatech.auth.jwtsecurity.port.UserRepositoryPort;
 @Configuration
 class PersistenceConfig {
     @Bean
-    UserRepositoryPort userRepositoryPort(){
+    UserRepositoryPort userRepositoryPort() {
         return new UserRepositoryAdapter();
     }
 
