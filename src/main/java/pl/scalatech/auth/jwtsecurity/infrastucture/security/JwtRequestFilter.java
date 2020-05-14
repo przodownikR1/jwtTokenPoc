@@ -32,6 +32,7 @@ class JwtRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         final String requestTokenHeader = request.getHeader(HEADER_STRING);
+
         String username = null;
         String jwtToken = JwtTokenProvider.resolveToken(request);
         if (requestTokenHeader != null) {

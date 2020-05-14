@@ -2,28 +2,39 @@ package pl.scalatech.auth.jwtsecurity.infrastucture.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Base64;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
-import static pl.scalatech.auth.jwtsecurity.infrastucture.security.SecurityConstants.HEADER_STRING;
-import static pl.scalatech.auth.jwtsecurity.infrastucture.security.SecurityConstants.TOKEN_PREFIX;
+import static java.util.stream.Collectors.toSet;
+import static pl.scalatech.auth.jwtsecurity.infrastucture.security.SecurityConstants.*;
 
 
-@RequiredArgsConstructor
 public class JwtTokenProvider {
-    private static final SecretKey KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final SecretKey KEY;
     private final JwtSetting jwtSetting;
 
+    public JwtTokenProvider(JwtSetting jwtSetting) {
+        this.jwtSetting = jwtSetting;
+        //byte[] secret = Base64.getMimeDecoder().decode(jwtSetting.getSecret());
+        //this.KEY = Keys.hmacShaKeyFor(secret);
+        this.KEY = Keys.hmacShaKeyFor(jwtSetting.getSecret()
+                                                .getBytes());
+        //this.KEY =  Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    }
+
+    public static String resolveToken(HttpServletRequest req) {
+        String bearerToken = req.getHeader(HEADER_STRING);
+        if (bearerToken != null && bearerToken.startsWith(TOKEN_PREFIX)) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
 
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = getAllClaimsFromToken(token);
@@ -56,16 +67,14 @@ public class JwtTokenProvider {
         }
     }
 
-    public static String resolveToken(HttpServletRequest req) {
-        String bearerToken = req.getHeader(HEADER_STRING);
-        if (bearerToken != null && bearerToken.startsWith(TOKEN_PREFIX)) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
-
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        final Set<String> roles = userDetails.getAuthorities()
+                                             .stream()
+                                             .map(GrantedAuthority::getAuthority)
+                                             .filter(Objects::nonNull)
+                                             .collect(toSet());
+        claims.put(ROLES, roles);
         return doGenerateToken(claims, userDetails.getUsername());
     }
 
@@ -75,9 +84,7 @@ public class JwtTokenProvider {
 //3. According to JWS Compact Serialization(https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-41#section-3.1)
 //   compaction of the JWT to a URL-safe string
     private String doGenerateToken(Map<String, Object> claims, String subject) {
-        String secretKey = Base64.getEncoder()
-                                 .encodeToString(jwtSetting.getSecret()
-                                                           .getBytes());
+
         return TOKEN_PREFIX + Jwts.builder()
                                   .setClaims(claims)
                                   .setSubject(subject)
