@@ -70,7 +70,7 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
     }
 
     private ApiKey apiKey() {
-        return new ApiKey("JWT", HEADER_STRING, "header");
+        return new ApiKey(HEADER_STRING, HEADER_STRING, "header");
     }
 
     @Bean
@@ -87,7 +87,7 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
         return Lists.newArrayList(
-                new SecurityReference("JWT", authorizationScopes));
+                new SecurityReference(HEADER_STRING, authorizationScopes));
     }
 
     @Override
