@@ -1,24 +1,25 @@
 package pl.scalatech.auth.jwtsecurity.port
 
 import com.tngtech.archunit.core.importer.ClassFileImporter
-import com.tngtech.archunit.core.importer.ImportOption
 import com.tngtech.archunit.lang.ArchRule
-import com.tngtech.archunit.lang.syntax.ArchRuleDefinition
+import spock.lang.Shared
 import spock.lang.Specification
 
-import static com.tngtech.archunit.core.importer.ImportOption.Predefined.*
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.methods
+import java.lang.Void as Should
+
+import static com.tngtech.archunit.core.importer.ImportOption.Predefined.DO_NOT_INCLUDE_TESTS
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*
 
 class PortRulesSpec extends Specification {
     static final String BASE_PACKAGE = 'pl.scalatech.auth.jwtsecurity'
     static final String PORT_PACKAGE = "${BASE_PACKAGE}.port"
+    @Shared
+    def ports = new ClassFileImporter()
+            .withImportOption(DO_NOT_INCLUDE_TESTS)
+            .importPackages(PORT_PACKAGE)
 
-    Void "port have only public methods and classes"() {
+    Should "port have only public methods and classes"() {
         given:
-        def ports = new ClassFileImporter()
-                .withImportOption(DO_NOT_INCLUDE_TESTS)
-                .importPackages(PORT_PACKAGE)
         ArchRule classRule = classes().that()
                 .resideInAPackage(PORT_PACKAGE)
                 .should().bePublic().andShould().beInterfaces()
@@ -28,5 +29,18 @@ class PortRulesSpec extends Specification {
         expect:
         classRule.check(ports)
         methodRule.check(ports)
+    }
+
+    Should "port not depend on spring"() {
+        given:
+        ArchRule rule = noClasses()
+                .that()
+                .resideInAPackage(
+                        "..port..")
+                .should()
+                .dependOnClassesThat()
+                .resideInAnyPackage("org.springframework..");
+        expect:
+        rule.check(ports)
     }
 }
