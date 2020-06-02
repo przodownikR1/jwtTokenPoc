@@ -1,6 +1,6 @@
 package pl.scalatech.auth.jwtsecurity.adapter.out.persistence;
 
-import pl.scalatech.auth.jwtsecurity.infrastucture.security.UserAuth;
+import pl.scalatech.auth.jwtsecurity.infrastructure.security.UserAuth;
 import pl.scalatech.auth.jwtsecurity.port.UserRepositoryPort;
 
 import java.util.HashSet;

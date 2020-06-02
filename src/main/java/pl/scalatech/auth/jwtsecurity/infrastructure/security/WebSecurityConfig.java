@@ -1,4 +1,4 @@
-package pl.scalatech.auth.jwtsecurity.infrastucture.security;
+package pl.scalatech.auth.jwtsecurity.infrastructure.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -23,7 +23,7 @@ import java.util.Collections;
 
 import static org.springframework.http.HttpMethod.OPTIONS;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
-import static pl.scalatech.auth.jwtsecurity.infrastucture.security.AuthoritiesConstants.ADMIN;
+import static pl.scalatech.auth.jwtsecurity.infrastructure.security.AuthoritiesConstants.ADMIN;
 
 @Configuration
 @EnableWebSecurity

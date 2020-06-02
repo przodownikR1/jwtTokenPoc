@@ -1,4 +1,4 @@
-package pl.scalatech.auth.jwtsecurity.infrastucture.security.swagger;
+package pl.scalatech.auth.jwtsecurity.infrastructure.security.swagger;
 
 
 import com.google.common.collect.Lists;
@@ -21,7 +21,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.Arrays;
 import java.util.List;
 
-import static pl.scalatech.auth.jwtsecurity.infrastucture.security.SecurityConstants.HEADER_STRING;
+import static pl.scalatech.auth.jwtsecurity.infrastructure.security.SecurityConstants.HEADER_STRING;
 import static springfox.documentation.builders.PathSelectors.any;
 import static springfox.documentation.builders.PathSelectors.regex;
 import static springfox.documentation.spi.DocumentationType.SWAGGER_2;

@@ -1,4 +1,4 @@
-package pl.scalatech.auth.jwtsecurity.infrastucture.security;
+package pl.scalatech.auth.jwtsecurity.infrastructure.security;
 
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;

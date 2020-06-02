@@ -39,3 +39,5 @@ gradle-app.setting
 
 application.pid
 gc*.log.*
+gc.*.log
+gc.log

@@ -1,6 +1,6 @@
 package pl.scalatech.auth.jwtsecurity.port;
 
-import pl.scalatech.auth.jwtsecurity.infrastucture.security.UserAuth;
+import pl.scalatech.auth.jwtsecurity.infrastructure.security.UserAuth;
 
 import java.util.Optional;
 import java.util.Set;

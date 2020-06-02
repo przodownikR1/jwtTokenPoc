@@ -6,11 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import pl.scalatech.auth.jwtsecurity.infrastucture.security.UserAuth;
+import org.springframework.web.bind.annotation.*;
+import pl.scalatech.auth.jwtsecurity.infrastructure.security.UserAuth;
 import pl.scalatech.auth.jwtsecurity.port.UserRepositoryPort;
 
 import java.security.Principal;
@@ -22,17 +19,18 @@ import static org.springframework.http.ResponseEntity.ok;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping(value = "/")
 class HomeController {
 
     private final UserRepositoryPort userRepo;
 
-    @GetMapping("/")
+    @GetMapping
     String index() {
         return "Hello world";
     }
 
 
-    @GetMapping("/user")
+    @GetMapping("user")
     ResponseEntity<UserAuth> getUser(@RequestParam String username) {
         return userRepo.findByUsername(username)
                        .map(user -> ResponseEntity.ok(user))
@@ -41,27 +39,27 @@ class HomeController {
     }
 
 
-    @GetMapping("/api/user")
+    @GetMapping("api/user")
     String user(Principal principal) {
         log.info("user : {}", getUserName(principal));
         return "Hello users world";
     }
 
-    @GetMapping("/api/admin")
+    @GetMapping("api/admin")
     String admin(Principal principal) {
 
         log.info("admin : {}", getUserName(principal));
         return "Hello admins world";
     }
 
-    @GetMapping("/api/manager")
+    @GetMapping("api/manager")
     String manager(Principal principal) {
 
         log.info("manager : {}", getUserName(principal));
         return "Hello managers world";
     }
 
-    @GetMapping("/secContext")
+    @GetMapping("secContext")
     ResponseEntity<Map> secContext(Principal principal) {
         Map<String, String> context = new HashMap<>();
         context.put("userName", getUserName(principal));

@@ -9,9 +9,9 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import pl.scalatech.auth.jwtsecurity.infrastucture.security.JwtTokenProvider;
-import pl.scalatech.auth.jwtsecurity.infrastucture.security.JwtUserDetailsService;
-import pl.scalatech.auth.jwtsecurity.infrastucture.security.UserAuth;
+import pl.scalatech.auth.jwtsecurity.infrastructure.security.JwtTokenProvider;
+import pl.scalatech.auth.jwtsecurity.infrastructure.security.JwtUserDetailsService;
+import pl.scalatech.auth.jwtsecurity.infrastructure.security.UserAuth;
 
 @RestController
 @CrossOrigin
@@ -24,7 +24,7 @@ class AuthenticationController {
     private final JwtUserDetailsService userDetailsService;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+    ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenProvider.generateToken(userDetails);
@@ -42,7 +42,7 @@ class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> saveUser(@RequestBody UserAuth user) {
+    ResponseEntity<?> saveUser(@RequestBody UserAuth user) {
         return ResponseEntity.ok("TODO");
     }
 }
