@@ -27,6 +27,7 @@ group = 'pl.scalatech.auth'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -84,7 +85,9 @@ dependencies {
     testRuntime "org.objenesis:objenesis:3.1"       // allows mocking of classes without default constructor (together with
     // CGLIB)
 }
-
+bootBuildImage {
+    imageName="docker.io/library/jwttokenpoc:${project.version}"
+}
 test {
     outputs.dir snippetsDir
     useJUnitPlatform()
