@@ -32,6 +32,7 @@ sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
 
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -90,6 +91,10 @@ dependencies {
     testRuntime "net.bytebuddy:byte-buddy:1.10.6"   // allows mocking of classes (in addition to interfaces)
     testRuntime "org.objenesis:objenesis:3.1"       // allows mocking of classes without default constructor (together with
     // CGLIB)
+}
+
+bootBuildImage {
+    imageName="docker.io/library/jwttokenpoc:${project.version}"
 }
 
 asciidoctor {
