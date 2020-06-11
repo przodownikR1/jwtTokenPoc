@@ -1,6 +1,8 @@
 buildscript {
     repositories {
-        mavenCentral()
+        mavenLocal()
+        maven { url "https://repo.spring.io/release" }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
         classpath 'org.owasp:dependency-check-gradle:5.3.2'
@@ -21,11 +23,14 @@ apply plugin: 'org.owasp.dependencycheck'
 apply from: 'gradle/boot.gradle'
 apply from: 'gradle/sonar.gradle'
 apply from: 'gradle/spock.gradle'
+apply from: 'gradle/test.gradle'
 apply plugin: "com.adarshr.test-logger"
 apply plugin: 'com.palantir.docker'
 group = 'pl.scalatech.auth'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
 
 configurations {
     compileOnly {
@@ -34,7 +39,9 @@ configurations {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
+    maven { url "https://repo.spring.io/release/" }
 }
 
 ext {
@@ -83,11 +90,6 @@ dependencies {
     testRuntime "net.bytebuddy:byte-buddy:1.10.6"   // allows mocking of classes (in addition to interfaces)
     testRuntime "org.objenesis:objenesis:3.1"       // allows mocking of classes without default constructor (together with
     // CGLIB)
-}
-
-test {
-    outputs.dir snippetsDir
-    useJUnitPlatform()
 }
 
 asciidoctor {

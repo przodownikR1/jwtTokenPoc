@@ -8,8 +8,8 @@ apply plugin: 'org.sonarqube'
 
 sonarqube {
     properties {
-        property "sonar.projectName", "pl.scalatech.adauth"
-        property "sonar.projectKey", "pl.scalatech.adauth"
+        property "sonar.projectName", "pl.scalatech.jwttoken"
+        property "sonar.projectKey", "pl.scalatech.jwttoken"
         property "sonar.host.url","http://localhost:9000"
         property "sonar.exclusions",[
             "**/*DTO.java",
