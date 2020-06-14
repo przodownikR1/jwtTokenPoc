@@ -79,10 +79,7 @@ dependencies {
     }
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'org.springframework.security:spring-security-test'
-    
-    //TODO implementation  - lombok problem, when I choose other option
-    implementation "org.codehaus.groovy:groovy:3.0.3"
-
+    testImplementation "org.codehaus.groovy:groovy:3.0.3"
 
     testImplementation ('org.spockframework:spock-core:2.0-M2-groovy-3.0')
     testImplementation 'org.spockframework:spock-spring:2.0-M2-groovy-3.0'
